@@ -1,10 +1,10 @@
 const express = require('express')
-const configDB = require('./config/dbConfig')
+const configureDB = require('./config/database')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const PORT = 3030
 const app = express()
-configDB()
+const PORT = 3030
+configureDB()
 app.use(express.json())
 app.use(cors())
 
@@ -14,6 +14,11 @@ const menuSchema = new Schema({
     name : {
         type: String,
         required : true
+    },
+    menuType : {
+        type:String,
+        required:true,
+        enum:['Food','Drink']
     },
     price : {
         type:Number,
@@ -42,7 +47,6 @@ app.get('/menu-list',(req,res)=>{
     console.log('inside')
     Menu.find()
     .then((response)=>{
-        console.log(response)
         res.json(response)
     })
     .catch((error)=>{
@@ -52,18 +56,44 @@ app.get('/menu-list',(req,res)=>{
 
 app.post('/add-menu',(req,res)=>{
     const body = req.body
-    const menu = new Menu(body)
-    menu.save()
+    Menu.create(body)
     .then((response)=>{
         res.json(response)
     })
-    .error((error)=>{
+    .catch((error)=>{
         res.json(error)
     })
 })
 
+app.get('/search-menu',(req,res)=>{
+    const query = req.query
+})
+
 app.get('/order-list',(req,res)=>{
-    Order.find()
+    Order.find({isCompleted:true})
+    .then((response)=>{
+        res.json(response)
+    })
+    .catch((error)=>{
+        res.json(error)
+    })
+})
+
+app.post('/add-order',(req,res)=>{
+    const body = req.body
+    Order.create(body)
+    .then(response=>{
+        res.json(response)
+    })
+    .catch(error=>{
+        res.json(error)
+    })
+})
+
+app.put('/order/:id',(req,res)=>{
+    const id = req.params.id
+    const body = req.body
+    Order.findById(id,body)
     .then((response)=>{
         res.json(response)
     })
@@ -73,6 +103,6 @@ app.get('/order-list',(req,res)=>{
 })
 
 
-app.listen((PORT,()=>{
+app.listen(PORT,()=>{
     console.log(`Server is up and running on PORT ${PORT}`)
-}))
+})
