@@ -66,11 +66,19 @@ app.post('/add-menu',(req,res)=>{
 })
 
 app.get('/search-menu',(req,res)=>{
-    const query = req.query
+    const name = req.query.name
+    Menu.find()
+    .then((response)=>{
+        const result = response.filter(res=> res.name.toLowerCase().includes(name.toLowerCase()))
+        res.json(result)
+    })
+    .catch((error)=>{
+        res.json(error)
+    })
 })
 
 app.get('/order-list',(req,res)=>{
-    Order.find({isCompleted:true})
+    Order.find({isCompleted:false})
     .then((response)=>{
         res.json(response)
     })
@@ -93,7 +101,7 @@ app.post('/add-order',(req,res)=>{
 app.put('/order/:id',(req,res)=>{
     const id = req.params.id
     const body = req.body
-    Order.findById(id,body)
+    Order.findByIdAndUpdate(id,body)
     .then((response)=>{
         res.json(response)
     })
