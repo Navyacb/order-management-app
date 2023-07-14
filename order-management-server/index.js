@@ -44,7 +44,6 @@ const orderSchema = new Schema({
 const Order = mongoose.model('Order',orderSchema)
 
 app.get('/menu-list',(req,res)=>{
-    console.log('inside')
     Menu.find()
     .then((response)=>{
         res.json(response)
@@ -101,8 +100,9 @@ app.post('/add-order',(req,res)=>{
 app.put('/order/:id',(req,res)=>{
     const id = req.params.id
     const body = req.body
-    Order.findByIdAndUpdate(id,body)
+    Order.findByIdAndUpdate(id,body,{new:true, runValidators: true})
     .then((response)=>{
+        console.log(response)
         res.json(response)
     })
     .catch((error)=>{

@@ -40,7 +40,6 @@ const SearchMenu = (props)=>{
           }
           axios.post('http://localhost:3030/add-order',item)
           .then((response)=>{
-            console.log('response',response.data)
               handleAddOrders(response.data)
           })
           .catch((error)=>{
