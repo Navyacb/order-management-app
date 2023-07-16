@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { menuName } from "./helper/utility"
 
 export const OrderCard = (props)=>{

@@ -7,44 +7,68 @@ const SearchMenu = (props)=>{
     const [searchItems,setSearchItems] = useState([])
     const [error,setError] = useState(false)
 
-    function handleChange(e){
+    const handleChange = async(e)=>{
         const name = e.target.value
         setName(name)
         if(name.length>=1){
            // axios.get(`http://localhost:3030/search-menu?name=${name}`)
-           axios.get('http://localhost:3030/search-menu',{
-            params:{
-                name
-            }
-           })
-            .then((response)=>{
-            if(response.data.length === 0){
-                setError(true)
-            }else{
-                setSearchItems(response.data)
-            }
-            })
-            .catch((error)=>{
-                console.log('error during search',error)
-            })
+           try{
+            const response = await axios.get('http://localhost:3030/search-menu',{
+                params:{
+                    name
+                }
+               })
+               if(response.data.length === 0){
+                     setError(true)
+                }else{
+                    setSearchItems(response.data)
+                }
+            
+           }
+           catch(error){
+            console.log('error during search',error)
+           }
+        //    axios.get('http://localhost:3030/search-menu',{
+        //     params:{
+        //         name
+        //     }
+        //    })
+        //     .then((response)=>{
+        //     if(response.data.length === 0){
+        //         setError(true)
+        //     }else{
+        //         setSearchItems(response.data)
+        //     }
+        //     })
+        //     .catch((error)=>{
+        //         console.log('error during search',error)
+        //     })
         }else{
             setSearchItems([])
             setError(false)
         }
     }
 
-    function handleAdd(id){
+    const handleAdd = async(id)=>{
         const item = {
             menuItem : id,
             isCompleted : false
           }
-          axios.post('http://localhost:3030/add-order',item)
-          .then((response)=>{
-              handleAddOrders(response.data)
-          })
-          .catch((error)=>{
+          try{
+            const response =await axios.post('http://localhost:3030/add-order',item)
+            handleAddOrders(response.data)
+          }
+          catch(error){
             console.log('Error during adding to orders',error)
-          })
+          }
+
+        //   axios.post('http://localhost:3030/add-order',item)
+        //   .then((response)=>{
+        //       handleAddOrders(response.data)
+        //   })
+        //   .catch((error)=>{
+        //     console.log('Error during adding to orders',error)
+        //   })
     }
 
     return (

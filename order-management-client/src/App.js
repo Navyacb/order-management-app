@@ -9,19 +9,35 @@ const App = ()=>{
   const [orders,setOrders] = useState([])
  
   useEffect(()=>{
-    Promise.all([axios.get('http://localhost:3030/menu-list'),
-                 axios.get('http://localhost:3030/order-list')])
-      .then((response)=>{
-          const [menu,order] = response
+    (async function(){
+      try{
+        const response = await Promise.all([axios.get('http://localhost:3030/menu-list'),
+        axios.get('http://localhost:3030/order-list')])
+        const [menu,order] = response
           setMenus(menu.data)
           const result = order.data.map(ord=>{
             return {...ord}
           })
           setOrders(result)
-      })
-      .catch((error)=>{
-          console.log('Error in getting data in App',error)
-      })
+      }
+      catch(error){
+        console.log('Error in getting data in App',error)
+      }
+
+    })()
+    // Promise.all([axios.get('http://localhost:3030/menu-list'),
+    //              axios.get('http://localhost:3030/order-list')])
+    //   .then((response)=>{
+    //       const [menu,order] = response
+    //       setMenus(menu.data)
+    //       const result = order.data.map(ord=>{
+    //         return {...ord}
+    //       })
+    //       setOrders(result)
+    //   })
+    //   .catch((error)=>{
+    //       console.log('Error in getting data in App',error)
+    //   })
     },[])
 
     

@@ -43,71 +43,77 @@ const orderSchema = new Schema({
 
 const Order = mongoose.model('Order',orderSchema)
 
-app.get('/menu-list',(req,res)=>{
-    Menu.find()
-    .then((response)=>{
+app.get('/menu-list',async(req,res)=>{
+    try{
+        const response = await Menu.find()
         res.json(response)
-    })
-    .catch((error)=>{
+    }
+    catch(error){
         res.json(error)
-    })
+    }
+    // Menu.find()
+    // .then((response)=>{
+    //     res.json(response)
+    // })
+    // .catch((error)=>{
+    //     res.json(error)
+    // })
 })
 
-app.post('/add-menu',(req,res)=>{
+app.post('/add-menu',async(req,res)=>{
     const body = req.body
-    Menu.create(body)
-    .then((response)=>{
+    try{
+        const response = await Menu.create(body)
         res.json(response)
-    })
-    .catch((error)=>{
+    }
+    catch(error){
         res.json(error)
-    })
+    }
 })
 
-app.get('/search-menu',(req,res)=>{
+app.get('/search-menu',async(req,res)=>{
     const name = req.query.name
-    Menu.find()
-    .then((response)=>{
+    try{
+        const response = await Menu.find()
         const result = response.filter(res=> res.name.toLowerCase().includes(name.toLowerCase()))
         res.json(result)
-    })
-    .catch((error)=>{
+    }
+    catch(error){
         res.json(error)
-    })
+    }
 })
 
-app.get('/order-list',(req,res)=>{
-    Order.find({isCompleted:false})
-    .then((response)=>{
+app.get('/order-list',async(req,res)=>{
+    try{
+        const response = await Order.find({isCompleted:false})
         res.json(response)
-    })
-    .catch((error)=>{
+    }
+    catch(error){
         res.json(error)
-    })
+    }
 })
 
-app.post('/add-order',(req,res)=>{
-    const body = req.body
-    Order.create(body)
-    .then(response=>{
+app.post('/add-order',async(req,res)=>{
+    try{
+        const body = req.body
+        const response = await Order.create(body)
         res.json(response)
-    })
-    .catch(error=>{
+    }
+    catch(error){
         res.json(error)
-    })
+    }
 })
 
-app.put('/order/:id',(req,res)=>{
-    const id = req.params.id
-    const body = req.body
-    Order.findByIdAndUpdate(id,body,{new:true, runValidators: true})
-    .then((response)=>{
-        console.log(response)
+app.put('/order/:id',async(req,res)=>{
+    try{
+        const id = req.params.id
+        const body = req.body
+        const response = await Order.findByIdAndUpdate(id,body,{new:true, runValidators: true})
         res.json(response)
-    })
-    .catch((error)=>{
+    }
+    catch(error){
         res.json(error)
-    })
+    }
 })
 
 
