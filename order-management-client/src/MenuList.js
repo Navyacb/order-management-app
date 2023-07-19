@@ -1,7 +1,7 @@
 import SearchMenu from "./SearchMenu"
 
 export const MenuList = (props)=>{
-    const {menus,handleAddOrders} = props
+    const {menus,orderDispatch} = props
     return (
         <div className='col-6'>
             <h3>Menu</h3>
@@ -31,7 +31,7 @@ export const MenuList = (props)=>{
             </table>
             </div>
             <div className="row my-4">
-                    <SearchMenu handleAddOrders={handleAddOrders} />
+                    <SearchMenu orderDispatch={orderDispatch} />
             </div>
         </div>)
 }

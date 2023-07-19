@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 
 const SearchMenu = (props)=>{
-    const {handleAddOrders} = props
+    const {orderDispatch} = props
     const [name,setName] = useState('')
     const [searchItems,setSearchItems] = useState([])
     const [error,setError] = useState(false)
@@ -28,21 +28,6 @@ const SearchMenu = (props)=>{
            catch(error){
             console.log('error during search',error)
            }
-        //    axios.get('http://localhost:3030/search-menu',{
-        //     params:{
-        //         name
-        //     }
-        //    })
-        //     .then((response)=>{
-        //     if(response.data.length === 0){
-        //         setError(true)
-        //     }else{
-        //         setSearchItems(response.data)
-        //     }
-        //     })
-        //     .catch((error)=>{
-        //         console.log('error during search',error)
-        //     })
         }else{
             setSearchItems([])
             setError(false)
@@ -56,19 +41,11 @@ const SearchMenu = (props)=>{
           }
           try{
             const response =await axios.post('http://localhost:3030/add-order',item)
-            handleAddOrders(response.data)
+            orderDispatch({type:'Add_Order',payload:response.data})
           }
           catch(error){
             console.log('Error during adding to orders',error)
           }
-
-        //   axios.post('http://localhost:3030/add-order',item)
-        //   .then((response)=>{
-        //       handleAddOrders(response.data)
-        //   })
-        //   .catch((error)=>{
-        //     console.log('Error during adding to orders',error)
-        //   })
     }
 
     return (

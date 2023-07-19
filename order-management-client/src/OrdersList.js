@@ -6,7 +6,7 @@ import { OrderCard } from "./OrderCard"
 const {useState} = React
 
 export const OrdersList = (props)=>{
-    const {orders,menus,updateOrder} = props
+    const {orders,menus,orderDispatch} = props
     const [textStatus,setTextStatus] = useState('')
     const [ordered,setOrdered] = useState(false)
     const [completedId,setCompletedId] = useState('')
@@ -26,37 +26,18 @@ export const OrdersList = (props)=>{
                     return {...order}
                 }
             })
-            updateOrder(result)
+            orderDispatch({type:'Update_Order',payload:result})
         }
         catch(error){
             console.log('Error in update order function',error)
         }
-        // axios.put(`http://localhost:3030/order/${id}`,{isCompleted : true})
-        // .then((response)=>{
-        //     console.log('response',response.data)
-        //     const data = response.data
-        //     console.log('data',data)
-        //     console.log('orders',orders)
-        //     const result = orders.map(order=>{
-        //         if(data._id===order._id){
-        //         return {...data}
-        //         }else{
-        //         return {...order}
-        //         }
-        //     })
-        //     console.log('result',result)
-        //     updateOrder(result)
-        // })
-        // .catch((error)=>{
-        //     console.log('Error in update order function',error)
-        // })
     }
 
     function nextOrder(){
         const result = orders.filter(order=>{
             return order._id!==completedId
         })
-        updateOrder(result)
+        orderDispatch({type:'Update_Order',payload:result})
         setTextStatus('')
         setOrdered(false)
     }
@@ -75,7 +56,7 @@ export const OrdersList = (props)=>{
                             {(orders.length>0) &&
                             (orders.map((order,i)=>{
                                 return(
-                                    <OrderCard order={order} i={i} updateOrders={updateOrders} nextOrder={nextOrder} menus={menus} ordered={ordered} />
+                                    <OrderCard order={order} i={i} updateOrders={updateOrders} nextOrder={nextOrder} menus={menus} ordered={ordered} key={order.id} />
                                 )
                             }))}
                         </div>
