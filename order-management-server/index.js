@@ -51,13 +51,6 @@ app.get('/menu-list',async(req,res)=>{
     catch(error){
         res.json(error)
     }
-    // Menu.find()
-    // .then((response)=>{
-    //     res.json(response)
-    // })
-    // .catch((error)=>{
-    //     res.json(error)
-    // })
 })
 
 app.post('/add-menu',async(req,res)=>{

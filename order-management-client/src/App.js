@@ -1,5 +1,5 @@
 import './App.css';
-import {useState,useEffect, useReducer} from 'react'
+import {useEffect, useReducer} from 'react'
 import axios from 'axios'
 import {MenuList} from './MenuList';
 import { OrdersList } from './OrdersList';
@@ -11,6 +11,9 @@ const App = ()=>{
   function reduce(state,action){
     if(action.type === 'Fetch_Menu'){
       return action.payload
+    }
+    if(action.type === 'Add_Menu'){
+      return [...state,action.payload]
     }
     if(action.type === 'Update_Order'){
       return action.payload
@@ -27,7 +30,6 @@ const App = ()=>{
         axios.get('http://localhost:3030/order-list')])
         const [menu,order] = response
         menuDispatch({type:'Fetch_Menu',payload:menu.data})
-          //setOrders(order.data)
           orderDispatch({type:'Update_Order',payload:order.data})
       }
       catch(error){
@@ -41,7 +43,7 @@ const App = ()=>{
     <div className='container'>
        <h1 className='text-center'>Order Management</h1><br/><br/>
        <div className='row'>
-            <MenuList menus={menus} orderDispatch={orderDispatch} />
+            <MenuList menus={menus} orderDispatch={orderDispatch} menuDispatch={menuDispatch} />
             {(orders.length>0) && <OrdersList orders={orders} menus={menus} orderDispatch={orderDispatch}/>}
         </div>
     </div>
