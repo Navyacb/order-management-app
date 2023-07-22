@@ -17,8 +17,8 @@ export const MenuList = (props)=>{
     return (
         <div className='col-6'>
             <div className="row">
-                <div className="col-8"><h3>Menu</h3></div>
-                <div className="col-4"><button type="button" class="btn btn-outline-dark" onClick={handleAdd}>Add New Item</button></div>
+                <div className="col-8"><h3>{(addItem)? 'Add Item' : "Menu"}</h3></div>
+                <div className="col-4"><button type="button" className="btn btn-outline-dark" onClick={handleAdd}>Add New Item</button></div>
             </div>
             {/*<div className='row'>
                     <input type='radio' value={selected} onChange={handleChange} name='menuType' id={menu._id} />

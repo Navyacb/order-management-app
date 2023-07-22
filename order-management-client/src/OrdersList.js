@@ -1,9 +1,7 @@
-import React from "react"
 import { menuName } from "./helper/utility"
 import axios from "axios"
 import { OrderCard } from "./OrderCard"
-
-const {useState} = React
+import { useState,useMemo } from "react"
 
 export const OrdersList = (props)=>{
     const {orders,menus,orderDispatch} = props
@@ -20,7 +18,7 @@ export const OrdersList = (props)=>{
             const response = await axios.put(`http://localhost:3030/order/${id}`,{isCompleted : true})
             const data = response.data
             const result = orders.map(order=>{
-                    if(data._id===order._id){
+                    if(data._id === order._id){
                     return {...data}
                     }else{
                     return {...order}
@@ -47,6 +45,14 @@ export const OrdersList = (props)=>{
         return result.price
     }
 
+    const calAmtDue = useMemo(()=>{
+        console.log('amt')
+        const amt = orders.reduce((prev,curr)=>{
+            return prev+calAmt(curr.menuItem)
+        },0)
+        return amt
+    },[orders])
+
     return(
             <div className='col-6'>
                 <h3>Orders {(textStatus.length>0) && <span className="float-end text-success">The {textStatus} order is ready !</span>}</h3>
@@ -56,7 +62,7 @@ export const OrdersList = (props)=>{
                             {(orders.length>0) &&
                             (orders.map((order,i)=>{
                                 return(
-                                    <OrderCard order={order} i={i} updateOrders={updateOrders} nextOrder={nextOrder} menus={menus} ordered={ordered} key={order.id} />
+                                    <OrderCard key={order.id} order={order} i={i} updateOrders={updateOrders} nextOrder={nextOrder} menus={menus} ordered={ordered} />
                                 )
                             }))}
                         </div>
@@ -65,9 +71,7 @@ export const OrdersList = (props)=>{
                             <div className="card">
                                 <div className="card-body">
                                     <h5>Amount Due</h5>
-                                    <p>{orders.reduce((prev,curr)=>{
-                                        return prev+calAmt(curr.menuItem)
-                                    },0)}</p>
+                                    <p>{calAmtDue}</p>
                                 </div>
 
                             </div>

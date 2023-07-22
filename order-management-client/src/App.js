@@ -29,7 +29,7 @@ const App = ()=>{
         const response = await Promise.all([axios.get('http://localhost:3030/menu-list'),
         axios.get('http://localhost:3030/order-list')])
         const [menu,order] = response
-        menuDispatch({type:'Fetch_Menu',payload:menu.data})
+          menuDispatch({type:'Fetch_Menu',payload:menu.data})
           orderDispatch({type:'Update_Order',payload:order.data})
       }
       catch(error){

@@ -12,7 +12,6 @@ export const OrderCard = (props)=>{
 
     return (
         <div style={{width:'fit-content'}}>
-            {console.log('ordered div',ordered)}
             <div className='card me-3 mt-3 p-0' style={(order.isCompleted) ? {background : '#59af59'} :  {background : '#f59149'}}>
                 <div className='card-body'>
                     <h5>#{i+1}{((i===0) && (<input type='checkbox' className="float-end" checked={ordered} onChange={handleChange}/>)) ||
