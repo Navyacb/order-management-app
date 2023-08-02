@@ -5,16 +5,19 @@ import {MenuList} from './MenuList';
 import { OrdersList } from './OrdersList';
 
 const App = ()=>{
-  const [menus,menuDispatch] = useReducer(reduce,[])
-  const [orders,orderDispatch] = useReducer(reduce,[])
+  const [menus,menuDispatch] = useReducer(menuReduce,[])
+  const [orders,orderDispatch] = useReducer(orderReduce,[])
 
-  function reduce(state,action){
+  function menuReduce(state,action){
     if(action.type === 'Fetch_Menu'){
       return action.payload
     }
     if(action.type === 'Add_Menu'){
       return [...state,action.payload]
     }
+  }
+
+  function orderReduce(state,action){
     if(action.type === 'Update_Order'){
       return action.payload
     }
